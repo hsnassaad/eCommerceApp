@@ -54,9 +54,12 @@ namespace ecommerceApi
 
             });
 
+            // Add Identity to configuration.
             builder = new IdentityBuilder(builder.UserType, builder.Services);
-            builder.AddEntityFrameworkStores<DataContext>();
-            builder.AddSignInManager<SignInManager<User>>();
+            builder.AddRoles<IdentityRole>()
+            .AddSignInManager<SignInManager<User>>()
+           .AddEntityFrameworkStores<DataContext>();
+            
 
 
             // Add JWT configuration.
@@ -91,38 +94,82 @@ namespace ecommerceApi
             // Add DI for interfaces.
             services.AddTransient<IProductRepository, ProductRepository>();
             
+
             services.AddCors();
 
+            //services.AddMvc(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser()
+            //    .Build();
 
-            services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
 
-                options.Filters.Add(new AuthorizeFilter(policy));
-
-            });
+            //});
+            services.AddMvc();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
+            app.UseAuthentication();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            // CreateRoles(serviceProvider).Wait();
         }
+
+        // Add roles
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            //initializing custom roles   
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            string[] roleNames = { "Admin", "Customer" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database 
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            User admin = await UserManager.FindByEmailAsync("admin@admin.com");
+
+            if (admin == null)
+            {
+                admin = new User()
+                {
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com",
+                    FirstName = "Hassan",
+                    LastName = "Assaad"
+                };
+
+
+                await UserManager.CreateAsync(admin, "admin");
+            }
+            await UserManager.AddToRoleAsync(admin, "Admin");
+        }
+
+
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using ecommerceApi.Dtos;
 using ecommerceApi.Interfaces;
 using ecommerceApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace ecommerceApi.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productService;
@@ -23,7 +25,7 @@ namespace ecommerceApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productService.GetProducts();

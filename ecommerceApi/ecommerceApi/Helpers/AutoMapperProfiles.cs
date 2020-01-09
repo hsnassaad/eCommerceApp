@@ -13,6 +13,7 @@ namespace ecommerceApi.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<ProductForCreationDto, Product>();
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }

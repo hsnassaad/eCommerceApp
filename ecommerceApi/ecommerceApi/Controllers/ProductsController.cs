@@ -53,18 +53,18 @@ namespace ecommerceApi.Controllers
             var product = _mapper.Map<Product>(productForCreationDto);
 
             if (_productService.ProductExist(productForCreationDto.Title))
-                return BadRequest("Product Title already exist\nPlease change the title");
+                return Conflict("Product title already exist\nPlease change the title");
 
             product.CreatedDate = DateTime.Now;
             product.UpdatedDate = DateTime.Now;
 
             _productService.Add(product);
-           if(await _productService.SaveAll()) return Ok();
+            if (await _productService.SaveAll()) return Ok(); // need to change it to be CreatedAtRoute to return 201 not 200 as status code
 
             return BadRequest($"Error while saving {productForCreationDto.Title}");
 
         }
 
-        //[HttpPost("")]
+      
     }
 }

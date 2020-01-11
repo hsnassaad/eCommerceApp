@@ -39,12 +39,13 @@ namespace ecommerceApi
         {
             services.AddControllers();
 
-            // Add DbContext And Sql Server Connection.
+            #region DbContext And Sql Server Connection
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("EcommerceShop")));
+            #endregion
 
-
+            #region Identity
             IdentityBuilder builder = services.AddIdentityCore<User>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -53,16 +54,16 @@ namespace ecommerceApi
                 options.Password.RequireUppercase = false;
 
             });
-
-            // Add Identity to configuration.
+            
+            #region Add Identity /User /Role
             builder = new IdentityBuilder(builder.UserType, builder.Services);
             builder.AddRoles<IdentityRole>()
             .AddSignInManager<SignInManager<User>>()
            .AddEntityFrameworkStores<DataContext>();
-            
+            #endregion
+            #endregion
 
-
-            // Add JWT configuration.
+            #region JWT configuration
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
 
@@ -72,46 +73,47 @@ namespace ecommerceApi
                    ValidateAudience = false,
                    ValidateIssuer = false
                });
+            #endregion
 
-            // Adding Polices to insure authorization.
+            #region Add Polices to insure authorization
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
-                options.AddPolicy("VipOnly", policy => policy.RequireRole("VIP"));
+                options.AddPolicy("RequireCustomerRole", policy => policy.RequireRole("Customer"));
             });
+            #endregion
 
-
-            // Configuration for AutoMapper.
+            #region Configuration for AutoMapper
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AutoMapperProfiles());
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-            
-            
+            #endregion
+
             // Add DI for interfaces.
             services.AddTransient<IProductRepository, ProductRepository>();
             
 
             services.AddCors();
 
-            //services.AddMvc(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //    .RequireAuthenticatedUser()
-            //    .Build();
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
 
-            //    options.Filters.Add(new AuthorizeFilter(policy));
+                options.Filters.Add(new AuthorizeFilter(policy));
 
-            //});
+            });
             services.AddMvc();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+                            IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -133,7 +135,7 @@ namespace ecommerceApi
             // CreateRoles(serviceProvider).Wait();
         }
 
-        // Add roles
+        #region CreateRoles
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             //initializing custom roles   
@@ -169,7 +171,7 @@ namespace ecommerceApi
             }
             await UserManager.AddToRoleAsync(admin, "Admin");
         }
-
+        #endregion
 
     }
 }

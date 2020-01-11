@@ -26,16 +26,13 @@ namespace ecommerceApi.Controllers
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
         public AuthenticationController(IConfiguration config, IMapper mapper,
-                                        UserManager<User> userManager, RoleManager<IdentityRole> roleManager,
-                                        SignInManager<User> signInManager)
+                                        UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _config = config;
             _mapper = mapper;
             _userManager = userManager;
-            _roleManager = roleManager;
             _signInManager = signInManager;
         }
 
@@ -52,13 +49,12 @@ namespace ecommerceApi.Controllers
 
                 if (result.Succeeded)
                 {
-                    //var appUser = _mapper.Map<UserForListDto>(user);
-
+                    var userToReturn = _mapper.Map<UserForListDto>(user);
 
                     return Ok(new
                     {
                         token = await GenerateJwtToken(user),
-                        user
+                        user = userToReturn
                     });
                 }
             }
@@ -71,21 +67,26 @@ namespace ecommerceApi.Controllers
         public async Task<IActionResult> Register(UserForRegistrationDto userForRegistrationDto)
         {
             var userToCreate = _mapper.Map<User>(userForRegistrationDto);
-            var result = await _userManager.CreateAsync(userToCreate, userForRegistrationDto.Password);
 
-            if (result.Succeeded)
+            if (await _userManager.FindByEmailAsync(userForRegistrationDto.Email) != null) 
+                return Conflict("Email aleardy exist");
+
+            var createUserResult = await _userManager.CreateAsync(userToCreate, userForRegistrationDto.Password);
+
+            if (createUserResult.Succeeded)
             {
-              var result2 = await _userManager.AddToRoleAsync(userToCreate, "Customer");
+              var addRoleToUserResult = await _userManager.AddToRoleAsync(userToCreate, "Customer");
 
-                if (result2.Succeeded)
+                if (addRoleToUserResult.Succeeded)
                 {
-                    return Ok(userToCreate); //need to change to be CreatedAtRoute
+                    var userToReturn = _mapper.Map<UserForDetailsDto>(userToCreate);
+                    return CreatedAtRoute("GetUser", new { controller = "Users" , userId = userToCreate.Id }, userToReturn);
                 }
 
-                return BadRequest(result2.Errors);
+                return BadRequest(addRoleToUserResult.Errors);
             }
 
-            return BadRequest(result.Errors);
+            return BadRequest(createUserResult.Errors);
         }
         private async Task<string> GenerateJwtToken(User user)
         {

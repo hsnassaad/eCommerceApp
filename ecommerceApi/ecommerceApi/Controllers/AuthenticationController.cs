@@ -75,7 +75,11 @@ namespace ecommerceApi.Controllers
 
             if (createUserResult.Succeeded)
             {
-              var addRoleToUserResult = await _userManager.AddToRoleAsync(userToCreate, "Customer");
+                if (string.IsNullOrWhiteSpace(userForRegistrationDto.RoleName))
+                   {
+                    userForRegistrationDto.RoleName = "Customer";
+                    }
+                    var addRoleToUserResult = await _userManager.AddToRoleAsync(userToCreate, userForRegistrationDto.RoleName);
 
                 if (addRoleToUserResult.Succeeded)
                 {
@@ -85,7 +89,6 @@ namespace ecommerceApi.Controllers
 
                 return BadRequest(addRoleToUserResult.Errors);
             }
-
             return BadRequest(createUserResult.Errors);
         }
         private async Task<string> GenerateJwtToken(User user)

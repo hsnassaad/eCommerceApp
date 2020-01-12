@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using ecommerceApi.Dtos;
@@ -35,45 +36,72 @@ namespace ecommerceApi.Controllers
             return Ok(userToReturn);
         }
 
-        [HttpGet("{userId}", Name ="GetUser")]
+        [HttpGet("{userId}", Name = "GetUser")]
         [Authorize("RequireAdminRole")]
         public async Task<IActionResult> GetUserByEmailOrId(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-              user = await _userManager.FindByEmailAsync(userId);
+                user = await _userManager.FindByEmailAsync(userId);
 
             if (user == null)
                 return NotFound("User Not Found");
 
             var userForDetails = _mapper.Map<UserForDetailsDto>(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-            return Ok(userForDetails);
+            return Ok(new { user = userForDetails, roles = userRoles });
         }
 
-        [HttpPost]
+
+        //[HttpPost]
+        //[Authorize("RequireAdminRole")]
+        //public async Task<IActionResult> CreateUser(UserForRegistrationDto userForRegistration)
+        //{
+        //    var userToCreate = _mapper.Map<User>(userForRegistration);
+
+        //    var createUserResult = await _userManager.CreateAsync(userToCreate, userForRegistration.Password);
+
+        //    if (createUserResult.Succeeded)
+        //    {
+        //        if (string.IsNullOrWhiteSpace(userForRegistration.RoleName))
+        //        {
+        //            userForRegistration.RoleName = "Customer";
+        //        }
+        //        var addRoleToUserResult = await _userManager.AddToRoleAsync(userToCreate, userForRegistration.RoleName);
+        //        if (addRoleToUserResult.Succeeded)
+        //        {
+        //        var userToReturn = _mapper.Map<UserForDetailsDto>(userToCreate);
+        //        return CreatedAtRoute("GetUser", new { controller = "Users", userId = userToCreate.Id }, userToReturn);
+        //        }
+        //        return BadRequest(addRoleToUserResult.Errors);
+        //    }
+        //    return BadRequest(createUserResult.Errors);
+        //}
+
         [Authorize("RequireAdminRole")]
-        public async Task<IActionResult> CreateUser(UserForRegistrationDto userForRegistration, string roleName)
+        [HttpPost("{userId}/role")]
+        public async Task<IActionResult> AddOrDeleteUserRole(UpdateRoleDto updateRole, string userId)
         {
-            var userToCreate = _mapper.Map<User>(userForRegistration);
+            var user = await _userManager.FindByIdAsync(userId);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-            var createUserResult = await _userManager.CreateAsync(userToCreate, userForRegistration.Password);
+                if (userRoles.Contains(updateRole.RoleName))
+                {
+                if (updateRole.Delete)
+                {
+                 var removeRoleResult = await _userManager.RemoveFromRoleAsync(user, updateRole.RoleName);
 
-            if (createUserResult.Succeeded)
-            {
-                if (string.IsNullOrWhiteSpace(roleName))
-                {
-                    roleName = "Customer";
+                    if(removeRoleResult.Succeeded) return NoContent();
                 }
-                var addRoleToUserResult = await _userManager.AddToRoleAsync(userToCreate, roleName);
-                if (addRoleToUserResult.Succeeded)
-                {
-                var userToReturn = _mapper.Map<UserForDetailsDto>(userToCreate);
-                return CreatedAtRoute("GetUser", new {  id = userToCreate.Id }, userToReturn);
+                    return BadRequest($"user is already in {updateRole.RoleName} role");
                 }
-                return BadRequest(addRoleToUserResult.Errors);
-            }
-            return BadRequest(createUserResult.Errors);
+
+          var addedRoleResult = await _userManager.AddToRoleAsync(user, updateRole.RoleName);
+            if(addedRoleResult.Succeeded)
+                return NoContent();
+
+            return BadRequest($"Faild to add {updateRole.RoleName} role to {user.Email}");
         }
 
         [HttpPut("{userId}")]

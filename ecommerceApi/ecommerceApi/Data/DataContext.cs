@@ -32,7 +32,6 @@ namespace ecommerceApi.Data
              .HasOne(op => op.Product)
              .WithMany(o => o.OrderProducts)
              .HasForeignKey(op => op.ProductId);
-
         }
     }
 }

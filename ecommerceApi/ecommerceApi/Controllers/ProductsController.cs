@@ -14,7 +14,6 @@ namespace ecommerceApi.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productService;
@@ -26,14 +25,15 @@ namespace ecommerceApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productService.GetProducts();
-
             return Ok(products);
         }
 
-        [HttpGet("{productId}")]
+        [HttpGet("{productId}", Name = "GetProduct")]
+        [Authorize]
         public async Task<IActionResult> GetProduct(int productId)
         {
             var product = await _productService.GetProduct(productId);
@@ -44,29 +44,50 @@ namespace ecommerceApi.Controllers
         }
 
         [HttpPost]
+        [Authorize("RequireAdminRole")]
         public async Task<IActionResult> CreateProduct(ProductForCreationDto productForCreationDto)
         {
-            // Add policy to admin (+ check if user is logged in)
-
-            //if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            //{
-            //   return Unauthorized("Unauthorized");
-            //}
             var product = _mapper.Map<Product>(productForCreationDto);
 
             if (_productService.ProductExist(productForCreationDto.Title))
                 return Conflict("Product title already exist\nPlease change the title");
 
-            product.CreatedDate = DateTime.Now;
-            product.UpdatedDate = DateTime.Now;
-
             _productService.Add(product);
-            if (await _productService.SaveAll()) return Ok(); // need to change it to be CreatedAtRoute to return 201 not 200 as status code
-
+            if (await _productService.SaveAll())
+            {
+                var productToReturn = _mapper.Map<ProductForDetailsDto>(product);
+                return CreatedAtRoute("GetProduct", new { controller = "Products", productId = product.ProductId }, productToReturn);
+            }
             return BadRequest($"Error while saving {productForCreationDto.Title}");
-
         }
 
-      
+        [HttpPut("{productId}")]
+        [Authorize("RequireAdminRole")]
+        public async Task<IActionResult> UpdateProduct(ProductForUpdateDto productForUpdate, int productId)
+        {
+            var product = await _productService.GetProduct(productId);
+
+            if (product == null)
+                return NotFound($"Product with productId: {productId} is not found");
+
+            _mapper.Map(productForUpdate, product);
+
+            if (await _productService.SaveAll()) return NoContent();
+
+            return BadRequest($"Error while saving {product.Title}");
+        }
+
+        [HttpDelete("{productId}")]
+        [Authorize("RequireAdminRole")]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            var product = await _productService.GetProduct(productId);
+
+            if (product == null)
+                return NotFound($"Product with productId: {productId} is not found");
+            _productService.Remove(product);
+            if (await _productService.SaveAll()) return NoContent();
+            return BadRequest($"Error while deleting {product.Title}");
+        }
     }
 }

@@ -18,9 +18,12 @@ namespace ecommerceApi.Data
 
         public void Add<T>(T entity) where T : class
         {
-
             _context.Add(entity);
+        }
 
+        public void Remove<T>(T entity) where T : class
+        {
+            _context.Remove(entity);
         }
 
         public async Task<Product> GetProduct(int id)
@@ -36,9 +39,20 @@ namespace ecommerceApi.Data
             return await _context.Product.ToListAsync();
         }
 
-        public void Delete<T>(T entity) where T : class
+        public async Task<ICollection<Order>> GetOrders()
         {
-            _context.Remove(entity);
+            return await _context.Orders.ToListAsync();
+        }
+
+        public async Task<Order> GetOrder(int id)
+        {
+            var order = await _context.Orders
+                .Include(p => p.OrderProducts)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
+                
+            //var orderProducts = order.OrderProducts.Select(p => p.Product);
+            return order ?? null;
         }
 
         public bool ProductExist(string title)

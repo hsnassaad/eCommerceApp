@@ -9,6 +9,12 @@
     <Compile Remove="Migrations\20200108132903_AddTables.Designer.cs" />
     <Compile Remove="Migrations\20200109114227_AddIdentityAndUserTable.cs" />
     <Compile Remove="Migrations\20200109114227_AddIdentityAndUserTable.Designer.cs" />
+    <Compile Remove="Migrations\20200113122120_AddingUserToOrderProducts.cs" />
+    <Compile Remove="Migrations\20200113122120_AddingUserToOrderProducts.Designer.cs" />
+    <Compile Remove="Migrations\20200113122214_AddingUserToOrderProducts.cs" />
+    <Compile Remove="Migrations\20200113122214_AddingUserToOrderProducts.Designer.cs" />
+    <Compile Remove="Migrations\20200113135047_ModifyOrderProducts.cs" />
+    <Compile Remove="Migrations\20200113135047_ModifyOrderProducts.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">

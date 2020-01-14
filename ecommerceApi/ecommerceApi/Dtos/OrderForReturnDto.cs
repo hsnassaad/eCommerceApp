@@ -1,24 +1,18 @@
-﻿using System;
+﻿using ecommerceApi.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ecommerceApi.Models
+namespace ecommerceApi.Dtos
 {
-    public class Order
+    public class OrderForReturnDto
     {
-        public Order()
-        {
-            CreatedDate = DateTime.Now;
-        }
         public int OrderId { get; set; }
         public int NumberOfItems { get; set; }
         public float TotalPrice { get; set; }
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
         public DateTime CreatedDate { get; set; }
+        public UserForDetailsDto User { get; set; }
         public ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

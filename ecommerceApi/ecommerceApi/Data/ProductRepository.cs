@@ -39,16 +39,19 @@ namespace ecommerceApi.Data
             return await _context.Product.ToListAsync();
         }
 
-        public async Task<ICollection<Order>> GetOrders()
+        public async Task<ICollection<Order>> GetOrders(string userId)
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders
+                .Include(u=>u.User)
+                .Where(o=>o.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<Order> GetOrder(int id)
         {
             var order = await _context.Orders
-                .Include(p => p.OrderProducts)
-                .ThenInclude(p => p.Product)
+                .Include(p => p.OrderProducts).ThenInclude(p => p.Product)
+                .Include(u=>u.User)
                 .FirstOrDefaultAsync(o => o.OrderId == id);
                 
             //var orderProducts = order.OrderProducts.Select(p => p.Product);

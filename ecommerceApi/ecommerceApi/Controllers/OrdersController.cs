@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using ecommerceApi.Data;
@@ -32,7 +33,8 @@ namespace ecommerceApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _productService.GetOrders();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var orders = await _productService.GetOrders(userId);
             return Ok(orders);
         }
 
@@ -50,12 +52,18 @@ namespace ecommerceApi.Controllers
         [HttpPost("{userId}")]
         public async Task<IActionResult> CreateOrder(OrderForCreateDto orderForCreate, string userId)
         {
+            if (userId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            {
+                return Unauthorized("Unauthorized");
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
             float totalPrice = 0;
 
             var order = new Order
             {
                 NumberOfItems = orderForCreate.OrderProducts.Count,
+                UserId = user.Id
             };
 
             _productService.Add(order);
@@ -68,7 +76,6 @@ namespace ecommerceApi.Controllers
                     OrderId = order.OrderId,
                     ProductId = orderForCreate.OrderProducts[i].Product.ProductId,
                     Quantity = orderForCreate.OrderProducts[i].Quantity,
-                    UserId = user.Id
                 };
                 totalPrice += orderForCreate.OrderProducts[i].Product.UnitPrice * orderForCreate.OrderProducts[i].Quantity;
                 _productService.Add(orderProduct);

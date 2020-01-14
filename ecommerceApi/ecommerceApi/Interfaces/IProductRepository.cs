@@ -13,7 +13,7 @@ namespace ecommerceApi.Interfaces
         void Remove<T>(T entity) where T : class;
         Task<ICollection<Product>> GetProducts();
         Task<Product> GetProduct(int id);
-        Task<ICollection<Order>> GetOrders();
+        Task<ICollection<Order>> GetOrders(string userId);
         Task<Order> GetOrder(int id);
         bool ProductExist(string title);
         Task<bool> SaveAll();

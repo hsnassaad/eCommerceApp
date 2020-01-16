@@ -1,0 +1,31 @@
+<div class="login">
+  <mat-card class="my-card">
+  <mat-card-title class="my-title">
+    Sign In
+  </mat-card-title>
+  <mat-card-content>
+    <form class="my-form">
+      <mat-form-field class="my-full-width">
+        <input matInput
+        type="email"
+         name="email"
+         placeholder="Email">
+      </mat-form-field>
+
+      <mat-form-field class="my-full-width">
+        <input matInput
+        type="password"
+         name="password"
+        placeholder="Password">
+      </mat-form-field>
+      <mat-error>Invalid email or password</mat-error>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="center">
+    <button mat-flat-button color="primary"> Log In</button>
+  </mat-card-actions>
+  <mat-card-footer class="card-footer">
+    <mat-hint class="hint">Need an account?</mat-hint> <a href="/register">Sign Up </a>
+  </mat-card-footer>
+</mat-card>
+</div>

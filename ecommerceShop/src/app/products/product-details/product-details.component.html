@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>{{this.data.product.title}}</h1>
+<div mat-dialog-content>
+  <mat-grid-list cols="2" rowHeight="100px"  style="text-align: start;">
+    <mat-grid-tile rowspan="3"><img class="img-thumbnail" src="{{product.photoUrl | ../../../../../assets/img/product.png"/></mat-grid-tile>
+    <mat-grid-tile><p class="text-center" style="margin-top: auto;">{{this.data.product.description}}</p></mat-grid-tile>
+    <mat-grid-tile><p class="text-center"><span class="h5">Price:</span> {{this.data.product.unitPrice | currency}}</p></mat-grid-tile>
+    <mat-grid-tile>
+      <form>
+        <mat-form-field style="font-size: 20px;">
+          <input matInput
+          type="number"
+          min="1"
+          name="data.quantity"
+          [(ngModel)]="data.quantity"
+          style="text-align: center;"
+          (blur)="checkValue()">
+          </mat-form-field>
+          </form>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Back</button>
+  <button mat-button
+  [mat-dialog-close]="data"
+  style="outline: none;"
+  color="primary"
+  (click)="AddItem()" cdkFocusInitial>Add to order</button>
+</div>

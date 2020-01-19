@@ -47,6 +47,7 @@
         <input matInput
         type="email"
          name="email"
+         #email
          formControlName = "email"
          placeholder="Enter your email"
          required>
@@ -96,11 +97,21 @@
       </mat-radio-group>
     </form>
   </mat-card-content>
-  <mat-card-actions align="center">
+  <mat-card-actions align="center" style="width: 100%;">
     <button mat-flat-button color="primary" form="rgForm" [disabled]="!registerForm.valid"> Register</button>
+    <mat-progress-spinner style="width: 30px;
+    height: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 18px;"
+    mode="indeterminate"
+    *ngIf="loading"
+    diameter="30">
+    </mat-progress-spinner >
   </mat-card-actions>
   <mat-card-footer class="card-footer">
-    <mat-hint class="hint">Already have an account?</mat-hint> <a href="/login">Login </a>
+    <mat-hint class="hint">Already have an account?</mat-hint> <a href="auth/login">Login </a>
   </mat-card-footer>
 </mat-card>
 </div>

@@ -46,7 +46,7 @@ namespace ecommerceApi
             services.AddControllers()
             .AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+              //  options.SerializerSettings.ContractResolver = new DefaultContractResolver(); is used if i want to return the object as it is (pascal case)
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
@@ -158,7 +158,7 @@ namespace ecommerceApi
                 endpoints.MapControllers();
             });
 
-             CreateRoles(serviceProvider).Wait();
+             //CreateRoles(serviceProvider).Wait();
         }
 
         #region CreateRoles

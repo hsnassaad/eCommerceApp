@@ -9,6 +9,13 @@ import { MatListModule } from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 
@@ -21,7 +28,14 @@ const modules = [
   MatListModule,
   MatCardModule,
   MatInputModule,
-  MatRadioModule
+  MatRadioModule,
+  MatProgressSpinnerModule,
+  MatMenuModule,
+  MatSnackBarModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatBadgeModule,
+  MatTooltipModule
 ]
 @NgModule({
   imports: modules,

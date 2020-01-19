@@ -1,4 +1,4 @@
-.register{
+.login{
   margin: 0;
   top: 0;
   left: 0;
@@ -11,14 +11,14 @@ background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+
 }
 .my-card{
   position: absolute;
-  top: 20%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%);
   box-shadow: 5px 10px #888888;
 }
 
 .my-title{
-  font-size: 50px;
+  font-size:5vw;
   text-align: center;
 }
 .my-form {
@@ -26,29 +26,16 @@ background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+
   min-width: 150px;
   max-width: 500px;
   width: 100%;
-  margin-top: 20px;
 }
 
 .my-full-width {
-  width: 40%;
-  margin-left: 5%;
-  margin-bottom: 2%;
+  width: 100%;
 }
 
 .card-footer{
   margin-left: 18%;
   padding: 20px;
 }
-.gender{
-  margin-left: 16px;
-  margin-top: 20px;
-width: 50%;
-}
-
-.gender mat-radio-button {
-  margin-left: 12px;
-}
-
 .hint{
   margin-right: 10px;
 }

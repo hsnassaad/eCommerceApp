@@ -1,36 +1,78 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { appRouts } from './routes';
+
+
+import { AuthService } from './shared/auth.service';
+import { ProductService } from './products/product.service';
+import { AuthGuard } from './guards/auth.guard';
+import { AnonymousGuard } from './guards/anonymous.guard';
+import { ProductListResover } from './_resolver/product-list.resolver';
+import { ErrorInterceptorProvider } from './guards/error.interceptor';
 
 import { AppComponent } from './app.component';
+import { ProductsListComponent } from './products/products-list/products-list.component';
+import { ProductCardComponent } from './products/product-card/product-card.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { MaterialsModule } from './materials.module';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { appRouts } from './routes';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import {FlexLayoutModule } from '@angular/flex-layout';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
+
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
    declarations: [
       AppComponent,
       MainNavComponent,
       LoginComponent,
-      RegisterComponent
+      RegisterComponent,
+      ProductsListComponent,
+      ProductCardComponent,
+      ProductDetailsComponent,
    ],
    imports: [
       BrowserModule,
       BrowserAnimationsModule,
       MaterialsModule,
+      FlexLayoutModule,
       RouterModule.forRoot(appRouts),
       FormsModule,
       ReactiveFormsModule,
-      HttpClientModule
+      HttpClientModule,
+      JwtModule.forRoot({
+        config: {
+          // tslint:disable-next-line: object-literal-shorthand
+          tokenGetter: tokenGetter,
+          whitelistedDomains: ['localhost:44351'],
+          blacklistedRoutes: ['localhost:44351/api/v1.0/authentication']
+        }
+      })
    ],
-   providers: [],
+   providers: [
+    AuthService,
+    ProductService,
+    ErrorInterceptorProvider,
+    AuthGuard,
+    AnonymousGuard,
+    ProductListResover
+   ],
    bootstrap: [
       AppComponent
+   ],
+   entryComponents: [
+    ProductDetailsComponent
    ]
 })
 export class AppModule { }

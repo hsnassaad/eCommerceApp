@@ -24,7 +24,7 @@ namespace ecommerceApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet]   
         [Authorize]
         public async Task<IActionResult> GetProducts()
         {

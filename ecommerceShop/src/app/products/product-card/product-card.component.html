@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-title style="font-size: medium;">{{product.title}}</mat-card-title>
+  <img mat-card-image src="{{product.photoUrl | ../../../../../assets/img/product.png" alt="{{product.title}">
+  <mat-card-actions>
+    <button mat-icon-button
+    color="primary"
+    style="outline: none;"
+    matTooltip="Add to order"><mat-icon>add_shopping_cart</mat-icon></button>
+    <button mat-icon-button
+     color="primary"
+      (click)="productDetails()"
+       style="outline: none;"
+       matTooltip="details"><mat-icon>visibility</mat-icon></button>
+
+       <button mat-icon-button
+       color="warn"
+       *ngIf="authService.isAdmin()"
+        (click)="deleteProduct()"
+         style="outline: none; float: right;"
+         matTooltip="delete"><mat-icon>delete</mat-icon></button>
+
+  </mat-card-actions>
+</mat-card>

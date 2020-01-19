@@ -59,7 +59,7 @@ namespace ecommerceApi.Controllers
                 }
             }
 
-            return Unauthorized("Unauthorized");
+            return Unauthorized("Invalid email or password");
         }
 
 
@@ -91,6 +91,7 @@ namespace ecommerceApi.Controllers
             }
             return BadRequest(createUserResult.Errors);
         }
+
         private async Task<string> GenerateJwtToken(User user)
         {
             var claims = new List<Claim>

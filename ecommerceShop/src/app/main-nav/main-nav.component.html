@@ -5,9 +5,9 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item href="main/products">Products</a>
+      <a mat-list-item href="main/orders">Orders</a>
+      <!-- <a mat-list-item href="#">Link 3</a> -->
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -20,12 +20,50 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>ecommerceShop</span>
+      <mat-icon style="margin-right: 5px;">store</mat-icon> <span>The Ecommerce Shop</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button
+      [matMenuTriggerFor]="orderMenu"
+      style="outline: none;"
+      matTooltip="order products">
+      <mat-icon
+      [matBadge]="orderProducts.length"
+      [matBadgeHidden]="orderProducts.length === 0"
+      matBadgeColor="warn">shopping_cart</mat-icon>
+    </button>
+<mat-menu #orderMenu="matMenu">
+  <p *ngIf="total === 0" class="text-muted" style="font-size: small; text-align: center; display: inline;">You have no items in your shopping cart.</p>
+  <mat-list role="list"  *ngIf="total > 0">
+    <mat-list-item role="listitem" *ngFor="let product of orderProducts">
+      <img matListAvatar src="{{product.product.photoUrl}} | ../../../../../assets/img/product.png">
+      <p style="margin: auto; padding: inherit;">{{product.product.title}}</p>
+      <span class="text-muted" style="font-size: small; display: inline; text-align: right;">{{product.quantity}} x {{product.product.unitPrice | currency}}</span>
+    </mat-list-item>
+    <hr>
+    <p style="margin: 5%;">TOTAL: <span style="float: right; color: red;">{{total | currency}}</span></p>
+    <hr>
+    <button mat-mini-fab
+    color="warn"
+    style="left: 3%;"
+    matTooltipPosition="after"
+    matTooltip="clear all"
+    (click)="removeAllOrders()"><mat-icon> remove_shopping_cart</mat-icon> </button>
+    <button mat-mini-fab
+    color="primary"
+    style="float: right; right: 3%;"
+    matTooltipPosition="before"
+    matTooltip="checkout"> <mat-icon>check</mat-icon></button>
+  </mat-list>
+</mat-menu>
+      <button mat-button [matMenuTriggerFor]="userMenu"
+      style="outline: none;">{{logInUser.firstName | titlecase}}</button>
+    <mat-menu #userMenu="matMenu">
+  <button mat-menu-item style="outline: none;"><mat-icon>person</mat-icon>Edit Profile</button>
+  <button (click)="logOut()" mat-menu-item style="outline: none;"><mat-icon>exit_to_app</mat-icon>Log Out</button>
+</mat-menu>
     </mat-toolbar>
 
     <ng-content>
-    <!-- Add Content Here -->
-
     </ng-content>
 
   </mat-sidenav-content>

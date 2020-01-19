@@ -37,7 +37,7 @@ namespace ecommerceApi.Controllers
         }
 
         [HttpGet("{userId}", Name = "GetUser")]
-        [Authorize("RequireAdminRole")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetUserByEmailOrId(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

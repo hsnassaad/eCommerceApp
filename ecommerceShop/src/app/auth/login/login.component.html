@@ -1,0 +1,53 @@
+<div class="login">
+<!-- <p class="mat-display-4"> toto </p> -->
+  <mat-card class="my-card">
+  <mat-card-title class="my-title">
+    Sign In
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="loginForm" id="lnForm" (ngSubmit)="login()" class="my-form">
+      <mat-form-field class="my-full-width">
+        <input matInput
+        type="email"
+         name="email"
+         placeholder="Email"
+         formControlName="email">
+         <mat-error *ngIf="loginForm.get('email').hasError('email') && !loginForm.get('email').hasError('required') ">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email').hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="my-full-width">
+        <input matInput
+        type="password"
+         name="password"
+         formControlName="password"
+        placeholder="Password">
+        <mat-error *ngIf="loginForm.get('password').hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-error style="margin-top:5px;" *ngIf="showError">{{errorMessage}}</mat-error>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="center" style="width: 100%;">
+    <button mat-flat-button color="primary" form="lnForm" [disabled]="!loginForm.valid"> Log In</button>
+    <mat-progress-spinner style="width: 30px;
+    height: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 18px;"
+    mode="indeterminate"
+    *ngIf="loading"
+    diameter="30">
+    </mat-progress-spinner >
+  </mat-card-actions>
+  <mat-card-footer class="card-footer">
+    <mat-hint class="hint">Need an account?</mat-hint> <a href="auth/register">Sign Up </a>
+  </mat-card-footer>
+</mat-card>
+</div>

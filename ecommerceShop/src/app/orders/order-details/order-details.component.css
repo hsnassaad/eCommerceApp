@@ -1,0 +1,8 @@
+.content {
+padding: 2rem;
+}
+
+.content-header h2 {
+  line-height: 2rem;
+  margin-bottom: 35px;
+}

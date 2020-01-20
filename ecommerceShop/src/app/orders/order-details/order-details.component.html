@@ -1,0 +1,43 @@
+<app-main-nav>
+  <div class="content">
+    <div class="content-header">
+    <h2>
+      <mat-icon color="warn">today</mat-icon>
+       Order Date:
+       <span style="color: red;">{{order.createdDate | date}}</span>
+      </h2>
+    <h2>
+      <mat-icon color="warn">shopping_basket</mat-icon>
+        Number Of Items:
+        <span style="color: red;">{{order.numberOfItems}}</span>
+        </h2>
+    <h2>
+      <mat-icon color="warn">credit_card</mat-icon>
+       Total Price:
+       <span style="color: red;">{{order.totalPrice | currency}}</span>
+      </h2>
+  </div>
+<hr>
+  <div class="order-products">
+    <h4>Order Products:</h4>
+    <mat-list>
+      <mat-list-item *ngFor="let orderProduct of order.orderProducts"
+      style="height: fit-content;
+      margin-bottom: 20px;
+      font-size: large;">
+      <div class="paragraphs">
+        <div class="row">
+          <div class="span4">
+            <img style="height: 100px;"
+            src="{{orderProduct.product.photoUrl}} | ../../../../../assets/img/product.png">
+            <div class="content-heading"><h3>{{orderProduct.product.title}} </h3></div>
+            <p style="clear:both">{{orderProduct.product.description}}</p>
+            <p style="clear:both" class="text-primary">{{orderProduct.quantity}} x {{orderProduct.product.unitPrice | currency}}</p>
+          </div>
+        </div>
+      </div>
+         </mat-list-item>
+     </mat-list>
+  </div>
+  </div>
+</app-main-nav>

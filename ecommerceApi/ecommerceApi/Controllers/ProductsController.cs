@@ -85,7 +85,7 @@ namespace ecommerceApi.Controllers
 
             if (product == null)
                 return NotFound($"Product with productId: {productId} is not found");
-            _productService.Remove(product);
+            product.IsDeleted = true;
             if (await _productService.SaveAll()) return NoContent();
             return BadRequest($"Error while deleting {product.Title}");
         }

@@ -35,7 +35,8 @@ namespace ecommerceApi.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var orders = await _productService.GetOrders(userId);
-            return Ok(orders);
+           var ordersToReturn = _mapper.Map<List<OrderForReturnDto>>(orders);
+            return Ok(ordersToReturn);
         }
 
         [HttpGet("{id}", Name ="GetOrder")]
@@ -45,17 +46,14 @@ namespace ecommerceApi.Controllers
 
             if (order == null)
                 return NotFound("Order is not found");
-
-            return Ok(order);
+            var orderToReturn = _mapper.Map<OrderForDetailsDto>(order);
+            return Ok(orderToReturn);
         }
 
-        [HttpPost("{userId}")]
-        public async Task<IActionResult> CreateOrder(OrderForCreateDto orderForCreate, string userId)
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder(OrderForCreateDto orderForCreate)
         {
-            if (userId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
-            {
-                return Unauthorized("Unauthorized");
-            }
+           var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var user = await _userManager.FindByIdAsync(userId);
             float totalPrice = 0;

@@ -16,6 +16,7 @@ namespace ecommerceApi.Models
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
         public ICollection<OrderProducts> OrderProducts { get; set; }
 
     }

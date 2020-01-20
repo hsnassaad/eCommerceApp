@@ -47,19 +47,29 @@
     style="left: 3%;"
     matTooltipPosition="after"
     matTooltip="clear all"
-    (click)="removeAllOrders()"><mat-icon> remove_shopping_cart</mat-icon> </button>
+    (click)="removeAllOrders()">
+    <mat-icon> remove_shopping_cart</mat-icon>
+   </button>
+
     <button mat-mini-fab
     color="primary"
     style="float: right; right: 3%;"
     matTooltipPosition="before"
-    matTooltip="checkout"> <mat-icon>check</mat-icon></button>
+    matTooltip="checkout"
+    (click)="checkout()">
+    <mat-icon>check</mat-icon>
+  </button>
+
   </mat-list>
 </mat-menu>
       <button mat-button [matMenuTriggerFor]="userMenu"
       style="outline: none;">{{logInUser.firstName | titlecase}}</button>
     <mat-menu #userMenu="matMenu">
-  <button mat-menu-item style="outline: none;"><mat-icon>person</mat-icon>Edit Profile</button>
-  <button (click)="logOut()" mat-menu-item style="outline: none;"><mat-icon>exit_to_app</mat-icon>Log Out</button>
+  <button mat-menu-item
+  style="outline: none;"><mat-icon>person</mat-icon>Edit Profile</button>
+  <button mat-menu-item
+  style="outline: none;"
+  (click)="logOut()"><mat-icon>exit_to_app</mat-icon>Log Out</button>
 </mat-menu>
     </mat-toolbar>
 

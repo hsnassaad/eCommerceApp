@@ -36,14 +36,16 @@ namespace ecommerceApi.Data
 
         public async Task<ICollection<Product>> GetProducts()
         {
-            return await _context.Product.ToListAsync();
+            return await _context.Product
+                .Where(p=>p.IsDeleted == false)
+                .ToListAsync();
         }
 
         public async Task<ICollection<Order>> GetOrders(string userId)
         {
             return await _context.Orders
-                .Include(u=>u.User)
                 .Where(o=>o.UserId == userId)
+                .OrderByDescending(op => op.CreatedDate)
                 .ToListAsync();
         }
 

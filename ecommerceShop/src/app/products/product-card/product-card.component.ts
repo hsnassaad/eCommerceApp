@@ -44,7 +44,7 @@ export class ProductCardComponent implements OnInit {
     this.productService.getProduct(this.product.productId).subscribe(data => {
       this.productDetailsForDialog = data;
     }, error => {
-      this.snackBar.open('Failed to get product', 'cancel', {
+      this.snackBar.open(error, 'cancel', {
         duration: 5000 ,
       });
     });
@@ -52,9 +52,7 @@ export class ProductCardComponent implements OnInit {
 
   deleteProduct() {
     if (window.confirm('Are sure you want to delete this item ?')) {
-      // this.productService.deleteProduct(this.product.productId).subscribe(() => {
         this.removeProductFromList.emit(this.product);
-      // });
      }
   }
 

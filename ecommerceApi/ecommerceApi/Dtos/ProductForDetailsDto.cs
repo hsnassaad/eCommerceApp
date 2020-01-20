@@ -13,6 +13,7 @@ namespace ecommerceApi.Dtos
         public float UnitPrice { get; set; }
         public int Quantity { get; set; }
         public string PhotoUrl { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

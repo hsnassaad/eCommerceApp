@@ -5,16 +5,22 @@ import { appRouts } from './routes';
 
 import { AuthService } from './shared/auth.service';
 import { ProductService } from './products/product.service';
+import { OrderService } from './orders/order.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { ProductListResover } from './_resolver/product-list.resolver';
+import { OrderListResover } from './_resolver/order-list.resolver';
+import { OrderDetailsResover } from './_resolver/order-details.resolver';
 import { ErrorInterceptorProvider } from './guards/error.interceptor';
 
 import { AppComponent } from './app.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ProductCardComponent } from './products/product-card/product-card.component';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { OrderListComponent } from './orders/order-list/order-list.component';
+import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +31,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import {FlexLayoutModule } from '@angular/flex-layout';
-import { ProductDetailsComponent } from './products/product-details/product-details.component';
 
 
 export function tokenGetter() {
@@ -41,6 +46,8 @@ export function tokenGetter() {
       ProductsListComponent,
       ProductCardComponent,
       ProductDetailsComponent,
+      OrderListComponent,
+      OrderDetailsComponent
    ],
    imports: [
       BrowserModule,
@@ -63,10 +70,13 @@ export function tokenGetter() {
    providers: [
     AuthService,
     ProductService,
+    OrderService,
     ErrorInterceptorProvider,
     AuthGuard,
     AnonymousGuard,
-    ProductListResover
+    ProductListResover,
+    OrderListResover,
+    OrderDetailsResover
    ],
    bootstrap: [
       AppComponent

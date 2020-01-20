@@ -15,6 +15,10 @@ namespace ecommerceApi.Helpers
             CreateMap<ProductForCreationDto, Product>();
             CreateMap<Product, ProductForDetailsDto>();
             CreateMap<ProductForUpdateDto, Product>();
+            
+            CreateMap<Order, OrderForReturnDto>();
+            CreateMap<Order, OrderForDetailsDto>();
+            CreateMap<OrderProducts, OrderProductsDto>();
 
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<User, UserForListDto>();

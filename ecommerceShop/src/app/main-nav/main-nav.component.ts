@@ -8,6 +8,8 @@ import { User } from '../models/user';
 import { error } from 'protractor';
 import { OrderProduct } from '../models/order-product';
 import { ProductService } from '../products/product.service';
+import { OrderService } from '../orders/order.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-main-nav',
@@ -28,7 +30,9 @@ export class MainNavComponent implements OnInit  {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private authService: AuthService, private router: Router, private productService: ProductService) {}
+              private authService: AuthService, private router: Router,
+              private snackBar: MatSnackBar, private productService: ProductService,
+              private orderService: OrderService ) {}
 
   ngOnInit() {
     this.logInUser = this.authService.currentUser;
@@ -56,5 +60,22 @@ export class MainNavComponent implements OnInit  {
     localStorage.removeItem('orderProducts');
     this.productService.updateOrderProducts([]);
   }
+
+  checkout() {
+    if (window.confirm('Are sure you want to buy all this items?')) {
+    this.orderService.AddOrderProducts().subscribe(() => {
+      localStorage.removeItem('orderProducts');
+      this.productService.updateOrderProducts([]);
+    }, error => {
+      this.snackBar.open(error, 'cancel', {
+        duration: 5000 ,
+      });
+    }, () => {
+      this.snackBar.open('Order has been created successfully', 'cancel', {
+        duration: 5000 ,
+      });
+    });
+  }
+}
 
 }

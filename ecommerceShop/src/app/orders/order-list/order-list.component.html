@@ -1,0 +1,24 @@
+<app-main-nav>
+  <mat-nav-list>
+  <mat-list role="list">
+  <mat-list-item role="listitem"
+  *ngFor="let order of orders"
+  style="height: fit-content;">
+  <div>
+  <a matLine
+  style="font-size: xx-large;"
+  [routerLink]="['/main/orders', order.orderId]">
+  {{order.createdDate | date}}
+  </a>
+
+  <div style="margin-top: 2px;">
+
+  <p class="text-muted" style="margin:auto;">Number of items: {{order.numberOfItems}}</p>
+  <p class="text-muted">TOTAL: {{order.totalPrice | currency}}</p>
+</div>
+
+</div>
+</mat-list-item>
+</mat-list>
+</mat-nav-list>
+</app-main-nav>

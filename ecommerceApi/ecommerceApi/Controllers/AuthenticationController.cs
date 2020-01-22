@@ -49,7 +49,7 @@ namespace ecommerceApi.Controllers
 
                 if (result.Succeeded)
                 {
-                    var userToReturn = _mapper.Map<UserForListDto>(user);
+                    var userToReturn = _mapper.Map<UserForDetailsDto>(user);
 
                     return Ok(new
                     {

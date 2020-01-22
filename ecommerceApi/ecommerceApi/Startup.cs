@@ -70,7 +70,9 @@ namespace ecommerceApi
             builder = new IdentityBuilder(builder.UserType, builder.Services);
             builder.AddRoles<IdentityRole>()
             .AddSignInManager<SignInManager<User>>()
-           .AddEntityFrameworkStores<DataContext>();
+           .AddEntityFrameworkStores<DataContext>()
+           .AddDefaultTokenProviders();
+
             #endregion
             #endregion
 

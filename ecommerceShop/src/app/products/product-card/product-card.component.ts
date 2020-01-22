@@ -5,6 +5,7 @@ import { ProductDetailsComponent } from '../product-details/product-details.comp
 import { ProductService } from '../product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/shared/auth.service';
+import { ProductEditComponent } from '../product-edit/product-edit.component';
 
 @Component({
   selector: 'app-product-card',
@@ -18,12 +19,21 @@ export class ProductCardComponent implements OnInit {
 
   @Input() product: Product;
   @Output() removeProductFromList = new EventEmitter();
+  @Output() updateProductFromList = new EventEmitter();
   productDetailsForDialog: Product;
   qtyForDialog = 1;
 
   ngOnInit() {
     this.getProductDetails();
   }
+
+
+AddProductToOrder() {
+  this.productService.AddProductToOrder({product: this.product, quantity: 1} , false);
+  this.snackBar.open('The product **' + this.product.title + '** has been added to cart.', 'cancel', {
+    duration: 5000 ,
+  });
+}
 
   productDetails() {
 
@@ -34,9 +44,23 @@ export class ProductCardComponent implements OnInit {
         quantity: this.qtyForDialog
         }
     });
+  }
+
+  editProduct() {
+    const dialogRef = this.dialog.open(ProductEditComponent, {
+      width: '500px',
+      data: {
+          product: this.product,
+          forEdit: true
+        }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
+      if (result) {
+      if (result.event === 'Update') {
+        this.updateProductFromList.emit({product: result.updatedProduct, productId: result.productId });
+      }
+    }
     });
   }
 

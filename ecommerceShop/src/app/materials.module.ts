@@ -16,6 +16,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 
@@ -35,7 +36,8 @@ const modules = [
   MatDialogModule,
   MatGridListModule,
   MatBadgeModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTabsModule
 ]
 @NgModule({
   imports: modules,

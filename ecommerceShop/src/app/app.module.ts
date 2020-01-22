@@ -6,6 +6,7 @@ import { appRouts } from './routes';
 import { AuthService } from './shared/auth.service';
 import { ProductService } from './products/product.service';
 import { OrderService } from './orders/order.service';
+import { UserService } from './users/user.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { ProductListResover } from './_resolver/product-list.resolver';
@@ -21,6 +22,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { OrderListComponent } from './orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
+import { ProductEditComponent } from './products/product-edit/product-edit.component';
+import { UserEditComponent } from './users/user-edit/user-edit.component';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -47,7 +50,9 @@ export function tokenGetter() {
       ProductCardComponent,
       ProductDetailsComponent,
       OrderListComponent,
-      OrderDetailsComponent
+      OrderDetailsComponent,
+      ProductEditComponent,
+      UserEditComponent
    ],
    imports: [
       BrowserModule,
@@ -71,6 +76,7 @@ export function tokenGetter() {
     AuthService,
     ProductService,
     OrderService,
+    UserService,
     ErrorInterceptorProvider,
     AuthGuard,
     AnonymousGuard,
@@ -82,7 +88,8 @@ export function tokenGetter() {
       AppComponent
    ],
    entryComponents: [
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ProductEditComponent
    ]
 })
 export class AppModule { }

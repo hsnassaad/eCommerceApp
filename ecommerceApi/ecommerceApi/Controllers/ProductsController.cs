@@ -24,6 +24,7 @@ namespace ecommerceApi.Controllers
             _mapper = mapper;
         }
 
+        // need to modify the api to return a ProductForListDto
         [HttpGet]   
         [Authorize]
         public async Task<IActionResult> GetProducts()
@@ -50,7 +51,7 @@ namespace ecommerceApi.Controllers
             var product = _mapper.Map<Product>(productForCreationDto);
 
             if (_productService.ProductExist(productForCreationDto.Title))
-                return Conflict("Product title already exist\nPlease change the title");
+                return Conflict("Product title already exist");
 
             _productService.Add(product);
             if (await _productService.SaveAll())

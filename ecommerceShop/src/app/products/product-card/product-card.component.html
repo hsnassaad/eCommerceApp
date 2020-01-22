@@ -1,11 +1,21 @@
 <mat-card>
   <mat-card-title style="font-size: medium;">{{product.title}}</mat-card-title>
-  <img mat-card-image src="{{product.photoUrl | ../../../../../assets/img/product.png" alt="{{product.title}">
+  <img mat-card-image  src="{{product.photoUrl | ../../../../../assets/img/product.png" alt="{{product.title}">
   <mat-card-actions>
+    <button mat-icon-button
+    style="outline: none;"
+    matTooltip="Edit"
+    (click)="editProduct()"
+    *ngIf="authService.isAdmin()"
+    color="primary">
+    <mat-icon>edit</mat-icon>
+  </button>
     <button mat-icon-button
     color="primary"
     style="outline: none;"
-    matTooltip="Add to order"><mat-icon>add_shopping_cart</mat-icon></button>
+    matTooltip="Add to order"
+    *ngIf="!authService.isAdmin()"
+    (click)="AddProductToOrder()"><mat-icon>add_shopping_cart</mat-icon></button>
     <button mat-icon-button
      color="primary"
       (click)="productDetails()"

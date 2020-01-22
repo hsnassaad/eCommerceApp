@@ -9,6 +9,7 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
 import { OrderListResover } from './_resolver/order-list.resolver';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { OrderDetailsResover } from './_resolver/order-details.resolver';
+import { UserEditComponent } from './users/user-edit/user-edit.component';
 
 
 export const appRouts: Routes = [
@@ -29,6 +30,7 @@ export const appRouts: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
+      {path: 'profile/edit', component: UserEditComponent},
       { path: 'main/orders',
       children: [
         {path: '', component: OrderListComponent, resolve: {orders: OrderListResover}},

@@ -62,7 +62,7 @@ namespace ecommerceApi.Data
 
         public bool ProductExist(string title)
         {
-            if (_context.Product.Any(p => p.Title == title)) 
+            if (_context.Product.Any(p => p.Title == title && p.IsDeleted == false)) 
                 return true;
             return false;
         }

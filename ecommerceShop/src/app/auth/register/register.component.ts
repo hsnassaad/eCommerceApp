@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
     this.user = this.registerForm.value;
     this.authService.register(this.user).subscribe(response => {
       console.table(response);
-      this.router.navigate(['login']);
+      this.router.navigate(['auth/login']);
       this.loading = false;
     }, error => {
       this.snackBar.open(error, 'cancel', {

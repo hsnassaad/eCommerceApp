@@ -26,9 +26,15 @@ export class ProductService {
     return this.http.get<Product>(this.baseUrl + '/' + id);
   }
 
+  AddProduct(product: any): Observable<Product> {
+   return this.http.post<Product>(this.baseUrl, product);
+  }
+
+  UpdatedProduct(productId: number, product: any) {
+    return this.http.put(this.baseUrl + '/' + productId, product);
+  }
   AddProductToOrder(orderProduct: OrderProduct, fromDetailsPage: boolean) {
 
-    if (fromDetailsPage) {
     const products = JSON.parse(localStorage.getItem('orderProducts'));
     if (products) {
       this.orderProductsForSave = products;
@@ -37,14 +43,17 @@ export class ProductService {
     return data.product.productId === orderProduct.product.productId;
     });
     if (product) {
-    product.quantity = orderProduct.quantity;
-  } else {
+    if (fromDetailsPage) {
+      product.quantity = orderProduct.quantity;
+    } else {
+      product.quantity++;
+    }
+     } else {
   this.orderProductsForSave.push(orderProduct);
   }
     const productsToSave = JSON.stringify(this.orderProductsForSave);
     this.orderProductsSource.next(this.orderProductsForSave);
     localStorage.setItem('orderProducts', productsToSave);
-}
   }
 
   updateOrderProducts(orderProduct: OrderProduct[]) {

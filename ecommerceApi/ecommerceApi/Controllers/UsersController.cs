@@ -32,7 +32,7 @@ namespace ecommerceApi.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userManager.Users.ToListAsync();
-           var userToReturn = _mapper.Map<List<UserForListDto>>(users);
+            var userToReturn = _mapper.Map<List<UserForListDto>>(users);
             return Ok(userToReturn);
         }
 
@@ -86,19 +86,19 @@ namespace ecommerceApi.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-                if (userRoles.Contains(updateRole.RoleName))
-                {
+            if (userRoles.Contains(updateRole.RoleName))
+            {
                 if (updateRole.Delete)
                 {
-                 var removeRoleResult = await _userManager.RemoveFromRoleAsync(user, updateRole.RoleName);
+                    var removeRoleResult = await _userManager.RemoveFromRoleAsync(user, updateRole.RoleName);
 
-                    if(removeRoleResult.Succeeded) return NoContent();
+                    if (removeRoleResult.Succeeded) return NoContent();
                 }
-                    return BadRequest($"user is already in {updateRole.RoleName} role");
-                }
+                return BadRequest($"user is already in {updateRole.RoleName} role");
+            }
 
-          var addedRoleResult = await _userManager.AddToRoleAsync(user, updateRole.RoleName);
-            if(addedRoleResult.Succeeded)
+            var addedRoleResult = await _userManager.AddToRoleAsync(user, updateRole.RoleName);
+            if (addedRoleResult.Succeeded)
                 return NoContent();
 
             return BadRequest($"Faild to add {updateRole.RoleName} role to {user.Email}");
@@ -116,7 +116,7 @@ namespace ecommerceApi.Controllers
             var userFromRepo = await _userManager.FindByIdAsync(userId);
 
             var user = _mapper.Map(userFoUpdate, userFromRepo);
-            
+
             user.Updated = DateTime.Now;
 
             var result = await _userManager.UpdateAsync(user);
@@ -125,6 +125,21 @@ namespace ecommerceApi.Controllers
                 return NoContent();
 
             throw new Exception($"Updating user {userId} failed on save");
+        }
+        [HttpPut("changePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangeUserPasswordDto changeUserPassword) 
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var user = await _userManager.FindByIdAsync(userId);
+            var newPassword = _userManager.PasswordHasher.HashPassword(user,changeUserPassword.NewPassword);
+            user.PasswordHash = newPassword;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return NoContent();
+            return BadRequest(result.Errors);
         }
 
         [HttpDelete("{userId}")]

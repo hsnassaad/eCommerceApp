@@ -1,0 +1,71 @@
+<form [formGroup] = "productForm" (ngSubmit)="AddOrUpdate()">
+  <mat-form-field floatLabel="never"  style="width: 100%;">
+    <input
+    matInput
+    mat-dialog-title
+    name="title"
+    formControlName="title"
+    type="text"
+    placeholder="Title"
+    required>
+    <mat-error *ngIf="productForm.get('unitPrice').hasError('required')">
+      You need to specify a title
+     </mat-error>
+  </mat-form-field>
+<div mat-dialog-content>
+  <mat-grid-list cols="2" rowHeight="100px"  style="text-align: start;">
+    <mat-grid-tile rowspan="3">
+      <img class="img-thumbnail" src="{{data.product.photoUrl | ../../../../../assets/img/product.png"/>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field floatLabel="never">
+        <input matInput
+        name="unitPrice"
+        formControlName="unitPrice"
+        type="number"
+        placeholder="Unit Price (in $$)"
+        required>
+        <mat-error *ngIf="productForm.get('unitPrice').hasError('required')">
+         You need to specify a price
+        </mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+
+        <mat-form-field floatLabel="never">
+          <input matInput
+          min="1"
+          value="1"
+          type="number"
+          name="quantity"
+          formControlName="quantity"
+          placeholder="quantity"
+          required>
+          <mat-error *ngIf="productForm.get('quantity').hasError('required')">
+            quantity is required
+          </mat-error>
+          </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <p class="text-center" style="margin-top: auto;">
+      <mat-form-field floatLabel="never">
+        <textarea matInput
+        name="description"
+        formControlName="description"
+        placeholder="description"></textarea>
+      </mat-form-field>
+    </p>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Back</button>
+  <button mat-button
+  type="submit"
+  style="outline: none;"
+  color="primary"
+  [disabled]="!productForm.valid">Save</button>
+</div>
+</form>

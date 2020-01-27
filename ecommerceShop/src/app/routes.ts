@@ -10,6 +10,8 @@ import { OrderListResover } from './_resolver/order-list.resolver';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { OrderDetailsResover } from './_resolver/order-details.resolver';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { EditProfileUnsavedChanges } from './guards/edit-profile-unsaved-changes.guard';
 
 
 export const appRouts: Routes = [
@@ -30,7 +32,8 @@ export const appRouts: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      {path: 'profile/edit', component: UserEditComponent},
+      {path: 'dashboard', component: DashboardComponent},
+      {path: 'profile/edit', component: UserEditComponent, canDeactivate: [EditProfileUnsavedChanges]},
       { path: 'main/orders',
       children: [
         {path: '', component: OrderListComponent, resolve: {orders: OrderListResover}},

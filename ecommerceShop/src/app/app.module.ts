@@ -7,8 +7,10 @@ import { AuthService } from './shared/auth.service';
 import { ProductService } from './products/product.service';
 import { OrderService } from './orders/order.service';
 import { UserService } from './users/user.service';
+import { AdminService } from './dashboard/admin.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
+import { EditProfileUnsavedChanges } from './guards/edit-profile-unsaved-changes.guard';
 import { ProductListResover } from './_resolver/product-list.resolver';
 import { OrderListResover } from './_resolver/order-list.resolver';
 import { OrderDetailsResover } from './_resolver/order-details.resolver';
@@ -24,6 +26,9 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { TopPaidUsersChartComponent } from './dashboard/top-paid-users-chart/top-paid-users-chart.component';
+import { TopRequestedProductsChartComponent } from './dashboard/top-requested-products-chart/top-requested-products-chart.component';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -34,6 +39,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import {FlexLayoutModule } from '@angular/flex-layout';
+import { ChartsModule } from 'ng2-charts';
 
 
 export function tokenGetter() {
@@ -52,7 +58,10 @@ export function tokenGetter() {
       OrderListComponent,
       OrderDetailsComponent,
       ProductEditComponent,
-      UserEditComponent
+      UserEditComponent,
+      DashboardComponent,
+      TopPaidUsersChartComponent,
+      TopRequestedProductsChartComponent
    ],
    imports: [
       BrowserModule,
@@ -63,6 +72,7 @@ export function tokenGetter() {
       FormsModule,
       ReactiveFormsModule,
       HttpClientModule,
+      ChartsModule,
       JwtModule.forRoot({
         config: {
           // tslint:disable-next-line: object-literal-shorthand
@@ -77,7 +87,9 @@ export function tokenGetter() {
     ProductService,
     OrderService,
     UserService,
+    AdminService,
     ErrorInterceptorProvider,
+    EditProfileUnsavedChanges,
     AuthGuard,
     AnonymousGuard,
     ProductListResover,

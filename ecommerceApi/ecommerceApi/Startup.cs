@@ -107,6 +107,7 @@ namespace ecommerceApi
 
             // Add DI for interfaces.
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
 
             services.AddCors();
 

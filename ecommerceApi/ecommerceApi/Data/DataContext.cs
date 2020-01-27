@@ -1,4 +1,5 @@
-﻿using ecommerceApi.Models;
+﻿using ecommerceApi.Dtos;
+using ecommerceApi.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +16,8 @@ namespace ecommerceApi.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<OrderProducts> OrderProducts { get; set; }
+        public DbSet<TopPaidUsersDto> TopPaidUsers { get; set; }
+        public DbSet<TopRequestedProductsDto> TopRequestedProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +35,12 @@ namespace ecommerceApi.Data
              .HasOne(op => op.Product)
              .WithMany(o => o.OrderProducts)
              .HasForeignKey(op => op.ProductId);
+
+            builder.Entity<TopPaidUsersDto>()
+                .HasNoKey();
+            
+            builder.Entity<TopRequestedProductsDto>()
+                .HasNoKey();
         }
     }
 }

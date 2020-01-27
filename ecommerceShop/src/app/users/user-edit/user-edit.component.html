@@ -19,7 +19,8 @@
           class="card-img-top img-thumbnail">
 
         <div class="card-footer">
-          <button class="btn btn-success btn-block" form="editForm" [disabled]="!editForm.dirty">Save Changes</button>
+          <button class="btn btn-success btn-block" type="submit" (click)="updatedUser()"  [disabled]="(!editForm.dirty && !passwordForm.dirty) || (!editForm.valid || !passwordForm.valid) ">
+            Save Changes</button>
         </div>
       </div>
     </div>
@@ -28,7 +29,7 @@
       <mat-tab-group>
         <mat-tab label="Edit Profile">
           <div style="margin-top: 30px;">
-            <form [formGroup]="editForm" id="editForm" (ngSubmit)="updatedUser()">
+            <form [formGroup]="editForm" id="editForm">
               <h4>First Name:</h4>
               <mat-form-field style="width: 100%;">
                 <input matInput
@@ -64,18 +65,24 @@
           </mat-tab>
             <mat-tab label="Change Password">
               <div style="margin-top: 30px;">
-                <form>
+                <form [formGroup]="passwordForm">
                <h4>New Password:</h4>
               <mat-form-field style="width: 100%;">
                 <input matInput
+                type="password"
                 name="newPassword"
                 formControlName="newPassword">
               </mat-form-field>
               <h4>Confirm Password:</h4>
               <mat-form-field style="width: 100%;">
                 <input matInput
+                type="password"
                 name="confirmPassword"
-                formControlName="confirmPassword">
+                formControlName="confirmPassword"
+                [errorStateMatcher] = "matcher">
+                <mat-error *ngIf="passwordForm?.hasError('mismatch')">
+                  Password must match
+                </mat-error>
               </mat-form-field>
             </form>
             </div>

@@ -30,7 +30,7 @@ export class MainNavComponent implements OnInit  {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private authService: AuthService, private router: Router,
+              public authService: AuthService, private router: Router,
               private snackBar: MatSnackBar, private productService: ProductService,
               private orderService: OrderService ) {}
 

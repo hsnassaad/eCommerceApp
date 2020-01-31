@@ -29,6 +29,7 @@ import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TopPaidUsersChartComponent } from './dashboard/top-paid-users-chart/top-paid-users-chart.component';
 import { TopRequestedProductsChartComponent } from './dashboard/top-requested-products-chart/top-requested-products-chart.component';
+import { UsersListComponent } from './dashboard/users-list/users-list.component';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +62,8 @@ export function tokenGetter() {
       UserEditComponent,
       DashboardComponent,
       TopPaidUsersChartComponent,
-      TopRequestedProductsChartComponent
+      TopRequestedProductsChartComponent,
+      UsersListComponent
    ],
    imports: [
       BrowserModule,

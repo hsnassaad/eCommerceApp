@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ecommerceApi.Data;
 using ecommerceApi.Helpers;
+using ecommerceApi.Hubs;
 using ecommerceApi.Interfaces;
 using ecommerceApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,6 +43,7 @@ namespace ecommerceApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
 
             services.AddControllers()
             .AddNewtonsoftJson(options =>
@@ -54,6 +56,16 @@ namespace ecommerceApi
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("EcommerceShop")));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             #endregion
 
             #region Identity
@@ -150,7 +162,7 @@ namespace ecommerceApi
             }
 
             app.UseAuthentication();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("CorsPolicy");
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
@@ -159,6 +171,7 @@ namespace ecommerceApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChartHub>("/charts");
             });
 
              //CreateRoles(serviceProvider).Wait();

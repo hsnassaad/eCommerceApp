@@ -29,6 +29,8 @@ export class TopPaidUsersChartComponent implements OnInit {
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
+
+    this.adminService.startConnection();
     this.adminService.getTopFivePaidCustomers().subscribe(data => {
       this.users = data;
     }, error => {
@@ -37,6 +39,11 @@ export class TopPaidUsersChartComponent implements OnInit {
       this.buildChart();
       this.show = true;
     } );
+
+    this.adminService.hubConnection.on('updateDashboard', (data) => {
+      this.users = data.usersData;
+      this.buildChart();
+    });
   }
 
   buildChart() {

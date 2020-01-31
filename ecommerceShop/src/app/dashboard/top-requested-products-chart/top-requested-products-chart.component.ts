@@ -29,6 +29,7 @@ export class TopRequestedProductsChartComponent implements OnInit {
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
+    //this.adminService.startConnection();
     this.adminService.getTopFiveRequestedProducts().subscribe(data => {
       this.products = data;
     }, error => {
@@ -36,6 +37,11 @@ export class TopRequestedProductsChartComponent implements OnInit {
     }, () => {
       this.buildChart();
       this.show = true;
+    });
+
+    this.adminService.hubConnection.on('updateDashboard', (data) => {
+      this.products = data.productsData;
+      this.buildChart();
     });
   }
 

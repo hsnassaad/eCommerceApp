@@ -10,6 +10,7 @@ import { OrderProduct } from '../models/order-product';
 import { ProductService } from '../products/product.service';
 import { OrderService } from '../orders/order.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AdminService } from '../dashboard/admin.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -32,9 +33,11 @@ export class MainNavComponent implements OnInit  {
   constructor(private breakpointObserver: BreakpointObserver,
               public authService: AuthService, private router: Router,
               private snackBar: MatSnackBar, private productService: ProductService,
-              private orderService: OrderService ) {}
+              private orderService: OrderService,
+              private adminService: AdminService ) {}
 
   ngOnInit() {
+    this.adminService.startConnection();
     this.logInUser = this.authService.currentUser;
     this.productService.orderProducts.subscribe(data => {
       this.orderProducts = data;
@@ -66,6 +69,8 @@ export class MainNavComponent implements OnInit  {
     this.orderService.AddOrderProducts().subscribe(() => {
       localStorage.removeItem('orderProducts');
       this.productService.updateOrderProducts([]);
+      console.log('invoke');
+      this.adminService.hubConnection.invoke('UpdateDashboards');
     }, error => {
       this.snackBar.open(error, 'cancel', {
         duration: 5000 ,

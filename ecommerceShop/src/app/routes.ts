@@ -12,12 +12,15 @@ import { OrderDetailsResover } from './_resolver/order-details.resolver';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditProfileUnsavedChanges } from './guards/edit-profile-unsaved-changes.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 
 export const appRouts: Routes = [
 
   {path: '', canActivate: [AnonymousGuard],  redirectTo: 'auth/login', pathMatch: 'full'},
   {path: '', canActivate: [AuthGuard], redirectTo: 'main/products', pathMatch: 'full'},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard], pathMatch: 'full'},
+
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -32,7 +35,6 @@ export const appRouts: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      {path: 'dashboard', component: DashboardComponent},
       {path: 'profile/edit', component: UserEditComponent, canDeactivate: [EditProfileUnsavedChanges]},
       { path: 'main/orders',
       children: [
@@ -43,5 +45,4 @@ export const appRouts: Routes = [
       { path: '**', redirectTo: 'main/products', pathMatch: 'full' },
     ]
   },
-
 ];

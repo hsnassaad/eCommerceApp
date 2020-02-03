@@ -34,6 +34,7 @@ namespace ecommerceApi.Controllers
         public IActionResult GetTopFiveFiveCustomer()
         {
             var users = _adminService.GetTopFivePaidUsers();
+
             return Ok(users);
         }
 

@@ -15,6 +15,28 @@ export class TopPaidUsersChartComponent implements OnInit {
     title: {
       display: true,
       text: 'Top Paid Users'
+    },
+    tooltips: {
+      callbacks: {
+        label(tootipItem) {
+          return '$' + tootipItem.yLabel;
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Total Price',
+        },
+        ticks: {
+          min: 10,
+          stepSize: 10,
+          callback(value, index, values) {
+            return '$' + value;
+          }
+        }
+      }]
     }
   };
   public barChartLabels: Label[];

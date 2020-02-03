@@ -9,6 +9,7 @@ import { OrderService } from './orders/order.service';
 import { UserService } from './users/user.service';
 import { AdminService } from './dashboard/admin.service';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { EditProfileUnsavedChanges } from './guards/edit-profile-unsaved-changes.guard';
 import { ProductListResover } from './_resolver/product-list.resolver';
@@ -93,6 +94,7 @@ export function tokenGetter() {
     ErrorInterceptorProvider,
     EditProfileUnsavedChanges,
     AuthGuard,
+    AdminGuard,
     AnonymousGuard,
     ProductListResover,
     OrderListResover,

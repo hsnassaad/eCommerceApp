@@ -2,7 +2,7 @@
 Project done when i was doing my internship at "IDS FinTech" company.
 
 # About:
-Web App that can be used by tow roles "Admin" and "Customer":
+Web App that can be used by two roles "Admin" and "Customer":
 - Customers can buy products / edit profile / see list of orders...
 - Admin can manage products / have an admin panel to see top 5 paid customers and top 5 requested products.
 

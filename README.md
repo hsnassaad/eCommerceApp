@@ -17,9 +17,6 @@ Web App that can be used by two roles "Admin" and "Customer":
 
 - To test my skills in Web development and see what i am capable of doing, so i have created this app as a part of a tutorial.
 
-# When?
-
-- When i was doing my internship at "IDS FinTech" company.
 
 # Trello Url:
 https://trello.com/b/AvZcV7we/e-commerce-shop
